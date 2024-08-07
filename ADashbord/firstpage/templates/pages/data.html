@@ -1,23 +1,7 @@
 {% extends 'layouts/base.html' %} {% load static %} {% block content %}
-{{df.shape}}<br />
 
-<hr />
-{{df.head}}<br />
-<hr />
-{{df.columns}}<br />
-<hr />
-{{df.dtypes}}<br />
-<hr />
-{{df.describe}}<br />
-<hr />
-{{df.info}}<br />
-<hr />
-{{df.isnull}}<br />
-<hr />
-{{df.isnull.sum}}<br />
+<div class="bg-gray">
+    <h1>hello</h1>
+</div>
 
-<hr />
-{{df_html|safe}}
-<br />
-<hr />
-{% endblock %} ```
+{%endblock %} ```

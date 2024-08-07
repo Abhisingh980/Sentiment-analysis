@@ -2,6 +2,12 @@ from django.shortcuts import render
 from . import sentmint_analysis
 import pandas as pd
 import numpy as np
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -93,8 +99,40 @@ def index(request):
 
 
 def data(request):
-    df, df_time_if_tweet = sentmint_analysis.see_data()
-    x = pd.DataFrame(df.head(100))
-    df_html = x.to_html(classes='table table-striped table-hover',index=False, justify='center')
 
-    return render(request, 'pages/data.html', {'df': df,'df_html':df_html })
+    return render(request, 'pages/data.html')
+
+
+@login_required
+def loginuser(request):
+    if request.method == 'POST':
+            form = AuthenticationForm(request, data=request.POST)
+            if form.is_valid():
+                # Authenticate and log in the user
+                user = form.get_user()
+                login(request, user)
+                return redirect('/')  # Redirect to a success page or dashboard
+            else:
+                # Handle form errors
+                messages.error(request, 'Invalid username or password')
+                return render(request, 'login.html', {
+                        'form': form,
+                        'msg': messages.get_messages(request)
+                    })
+    else:
+        form = AuthenticationForm()
+
+    return render(request, 'accounts/login.html', {'form': form, 'msg': messages.get_messages(request)})
+
+@login_required
+def logout_user(request):
+
+    return render(request, 'accounts/login.html')
+@login_required
+def password_reset(request):
+
+    return render(request, 'accounts/password_reset.html')
+@login_required
+def register(request):
+
+    return render(request, 'accounts/register.html')
