@@ -84,6 +84,25 @@
                         font-size: 1.25rem;
                         font-weight: 500;
                     }
+                    .container-custom {
+                               display: flex;
+                               justify-content: center;
+                               align-items: center;
+                           }
+                           .text-area-container {
+                               width: 100%;
+                               max-width: 600px; /* Adjust max-width as needed */
+                           }
+                           .form-control-custom {
+                               border-radius: 10px;
+                               border: 1px solid #ced4da;
+                               box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                               padding: 1rem;
+                           }
+                           .form-control-custom:focus {
+                               border-color: #80bdff;
+                               box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+                           }
         </style>
     {% block extrahead %}{% endblock extrahead %}
     {% block extrastyle %}{% endblock extrastyle %}

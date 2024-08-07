@@ -46,6 +46,14 @@
             <span class="d-sm-inline d-none me-3 fs-4">Change Password</span>
           </a>
         </li>
+        {% if request.path == '/' %}
+        <li class="nav-item d-flex align-items-center">
+            <a href="{% url 'data' %}" class="nav-link text-body font-weight-bold px-0">
+            <span class="d-sm-inline d-none me-3 fs-4 text-success text-decoration-underline">Sentimnet Analysis link.</span>
+          </a>
+        </li>
+        {% endif %}
+
       </ul>
     </div>
   </div>

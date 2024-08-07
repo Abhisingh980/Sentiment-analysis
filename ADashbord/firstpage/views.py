@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 import torch.nn.functional as F
+from .models import Sentiment
 
 # Create your views here.
 
@@ -141,27 +142,39 @@ def register(request):
 def sentiment(request):
     if request.method == 'POST':
         text = request.POST.get('text')
-        print(text)
+        context = data(text)
 
-        # preapeare the model
-        model_name = "nlptown/bert-base-multilingual-uncased-sentiment"  # Example sentiment model
-        tokenizer = AutoTokenizer.from_pretrained(model_name)
-        model = AutoModelForSequenceClassification.from_pretrained(model_name)
-        # encode the text
-        result = tokenizer.encode(text, return_tensors="pt",truncation=True,padding=True)
-        result = model(result)
-        result =int(torch.argmax( result.logits))+1
-        print(result)
-        if result == 1 or result == 2:
-            result = "Negative"
-        elif result == 3:
-            result = "Neutral"
-        else:
-            result = "Positive"
+        # context and text should add in model.py
+        sentiment = Sentiment(given_text=text, sentiment_score=context['score'], sentiment=context['result'])
+        sentiment.save()
 
-        context = {
-            'text': text,
-            'result': result
-        }
         return render(request, 'pages/data.html', context=context)
     return render(request, 'pages/data.html')
+
+def data(text):
+    # preapeare the model
+
+    model_name = "nlptown/bert-base-multilingual-uncased-sentiment"  # Example sentiment model
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSequenceClassification.from_pretrained(model_name)
+    # encode the text
+    result = tokenizer.encode(text, return_tensors="pt",truncation=True,padding=True)
+    result = model(result)
+    result =int(torch.argmax( result.logits))+1
+
+    score = result
+
+    if result == 1 or result == 2:
+        result = "Negative"
+    elif result == 3:
+        result = "Neutral"
+    else:
+        result = "Positive"
+
+    context = {
+        'text': text,
+        'result': result,
+        'score': score
+    }
+
+    return context

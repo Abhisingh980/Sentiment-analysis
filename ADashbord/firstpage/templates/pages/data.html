@@ -5,14 +5,17 @@
     <form method="POST" ,action="{%url 'data'%}" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="mb-3">
-            <div class="form-floating">
-                <textarea
-                    class="form-control"
-                    placeholder="type your text here"
-                    id="floatingTextarea"
-                    name="text"
-                ></textarea>
+            <div class="container-custom">
+                    <div class="text-area-container">
+                        <textarea
+                            class="form-control form-control-custom"
+                            placeholder="Type your text here"
+                            id="floatingTextarea"
+                            name="text"
+                            rows="6"
+                        ></textarea>
                 <label for="floatingTextarea">Type your text here...</label>
+            </div>
             </div>
             <div class="center-container">
                 <button type="submit" class="btn btn-primary">Submit</button>
