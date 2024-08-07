@@ -1,7 +1,45 @@
 {% extends 'layouts/base.html' %} {% load static %} {% block content %}
 
-<div class="bg-gray">
-    <h1>hello</h1>
-</div>
+<div class="bg-gray p-4">
+    <hr />
+    <form method="POST" ,action="{%url 'data'%}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <div class="form-floating">
+                <textarea
+                    class="form-control"
+                    placeholder="type your text here"
+                    id="floatingTextarea"
+                    name="text"
+                ></textarea>
+                <label for="floatingTextarea">Type your text here...</label>
+            </div>
+            <div class="center-container">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
 
-{%endblock %} ```
+    <hr />
+    <div class="container flex mt-5">
+           <div class="row justify-content-center">
+               <div class="col-md-4 col-lg-8">
+                   <div class="card card-custom">
+                       <div class="card-header card-header-custom">
+                           <h5 class="card-title">Sentiment Analysis Result</h5>
+                       </div>
+                       <div class="card-body">
+                           <p class="card-text">given text : {{ text }}</p>
+                       </div>
+                       <div class="card-footer card-footer-custom">
+                           <p class="result-text text-success">Analyse result :<h2 class="text-dark"> {{ result }}</h2></p>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+
+
+        {%endblock %} ```
+    </div>
+</div>

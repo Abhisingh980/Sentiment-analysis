@@ -44,26 +44,46 @@
                 color: #007bff;
                 text-decoration: underline;
             }
-        </style>
-        <style>
-          .flex-container {
-            display: flex;
-            flex-direction: column; /* Stack children vertically */
-            align-items: center;    /* Center children horizontally */
-            justify-content: center; /* Center children vertically */
-            height: 100%;            /* Adjust height as needed */
-          }
+            .flex-container {
+              display: flex;
+              flex-direction: column; /* Stack children vertically */
+              align-items: center;    /* Center children horizontally */
+              justify-content: center; /* Center children vertically */
+              height: 100%;            /* Adjust height as needed */
+            }
 
-          .chart {
-            display: flex;
-            justify-content: center; /* Center the image horizontally */
-          }
+            .chart {
+              display: flex;
+              justify-content: center; /* Center the image horizontally */
+            }
 
-          .char_canvas {
-            max-width: 100%;         /* Ensure the image doesn't exceed the container width */
-            height: auto;            /* Maintain aspect ratio */
-            border-radius: 8px;      /* Adjust border radius if needed */
-          }
+            .char_canvas {
+              max-width: 100%;         /* Ensure the image doesn't exceed the container width */
+              height: auto;            /* Maintain aspect ratio */
+              border-radius: 8px;      /* Adjust border radius if needed */
+            }
+            .center-container {
+                        display: flex; /* Make the container flex */
+                        justify-content: center; /* Center horizontally */
+                        margin-top: 1rem; /* Center vertically */
+            }
+            .card-custom {
+                        border-radius: 15px;
+                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                    }
+                    .card-header-custom {
+                        background-color: #f8f9fa;
+                        border-bottom: 1px solid #e9ecef;
+                    }
+                    .card-footer-custom {
+                        background-color: #f8f9fa;
+                        border-top: 1px solid #e9ecef;
+                        text-align: center;
+                    }
+                    .result-text {
+                        font-size: 1.25rem;
+                        font-weight: 500;
+                    }
         </style>
     {% block extrahead %}{% endblock extrahead %}
     {% block extrastyle %}{% endblock extrastyle %}

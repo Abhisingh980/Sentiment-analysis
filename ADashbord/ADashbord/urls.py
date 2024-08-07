@@ -21,7 +21,7 @@ from firstpage import views
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('data/', views.data, name='data'),
+    path('data/', views.sentiment, name='data'),
     path('admin/', admin.site.urls),
     path('login/',views.loginuser, name='loginuser'),
     path('logout/',views.logout_user, name='logout'),

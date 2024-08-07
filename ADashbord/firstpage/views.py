@@ -9,6 +9,10 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
+import torch
+import torch.nn.functional as F
+
 # Create your views here.
 
 def index(request):
@@ -98,10 +102,6 @@ def index(request):
 
 
 
-def data(request):
-
-    return render(request, 'pages/data.html')
-
 
 @login_required
 def loginuser(request):
@@ -136,3 +136,32 @@ def password_reset(request):
 def register(request):
 
     return render(request, 'accounts/register.html')
+
+
+def sentiment(request):
+    if request.method == 'POST':
+        text = request.POST.get('text')
+        print(text)
+
+        # preapeare the model
+        model_name = "nlptown/bert-base-multilingual-uncased-sentiment"  # Example sentiment model
+        tokenizer = AutoTokenizer.from_pretrained(model_name)
+        model = AutoModelForSequenceClassification.from_pretrained(model_name)
+        # encode the text
+        result = tokenizer.encode(text, return_tensors="pt",truncation=True,padding=True)
+        result = model(result)
+        result =int(torch.argmax( result.logits))+1
+        print(result)
+        if result == 1 or result == 2:
+            result = "Negative"
+        elif result == 3:
+            result = "Neutral"
+        else:
+            result = "Positive"
+
+        context = {
+            'text': text,
+            'result': result
+        }
+        return render(request, 'pages/data.html', context=context)
+    return render(request, 'pages/data.html')
