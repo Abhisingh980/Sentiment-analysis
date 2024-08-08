@@ -12,7 +12,9 @@ from django.contrib.auth.decorators import login_required
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch
 import torch.nn.functional as F
-from .models import Sentiment
+from .models import Sentiment, logindatabase
+# import message error
+from django.contrib import messages
 
 # Create your views here.
 
@@ -102,38 +104,36 @@ def index(request):
 
 
 
-
-
-@login_required
 def loginuser(request):
+    flag = ''
     if request.method == 'POST':
-            form = AuthenticationForm(request, data=request.POST)
-            if form.is_valid():
-                # Authenticate and log in the user
-                user = form.get_user()
-                login(request, user)
-                return redirect('/')  # Redirect to a success page or dashboard
-            else:
-                # Handle form errors
-                messages.error(request, 'Invalid username or password')
-                return render(request, 'login.html', {
-                        'form': form,
-                        'msg': messages.get_messages(request)
-                    })
-    else:
-        form = AuthenticationForm()
+        data =  logindatabase.objects.all()
 
-    return render(request, 'accounts/login.html', {'form': form, 'msg': messages.get_messages(request)})
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        for i in data:
+            print(username, password)
+            if str(i.username) == username and str(i.password) == password:
+                flag = True
+                return redirect(request,'index')
 
-@login_required
+
+    context = {
+        'form': 'Invalid username or password. Please try again',
+        'check': flag
+    }
+
+    return render(request, 'accounts/login.html', context=context)
+
+
 def logout_user(request):
 
     return render(request, 'accounts/login.html')
-@login_required
+
 def password_reset(request):
 
     return render(request, 'accounts/password_reset.html')
-@login_required
+
 def register(request):
 
     return render(request, 'accounts/register.html')
@@ -143,6 +143,10 @@ def sentiment(request):
     if request.method == 'POST':
         text = request.POST.get('text')
         context = data(text)
+
+        if context == None:
+            messages.error(request, 'check a internet connection or try again later.')
+            return render(request, 'pages/data.html')
 
         # context and text should add in model.py
         sentiment = Sentiment(given_text=text, sentiment_score=context['score'], sentiment=context['result'])
